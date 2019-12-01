@@ -1,0 +1,131 @@
+{
+	"38338": {
+		"name": "KOMPSAT-3",
+		"type": "Earth Observation",
+		"creator": "Korea Aerospace Research Institute",
+		"launch": {
+			"site": "Vandenberg Air Force Base",
+			"country": "USA"
+		}
+	},
+	"39418": {
+		"name": "SKYSAT-1",
+		"type": "Earth Observation",
+		"orbit": "Polar",
+		"links": ["https://space.skyrocket.de/doc_sdat/skysat-1.htm"],
+		"cospar": "2013-066C",
+		"operator": {
+			"name": "Planet Labs",
+			"country": "USA"
+		},
+		"launch": {
+			"date": "2013-11-21",
+			"site": "Yasniy, Dombarovskiy Air Base",
+			"country": "Russia",
+			"vehicle": "Dnepr"
+		}
+	},
+	"40072": {
+		"name": "SKYSAT-2",
+		"type": "Earth Observation",
+		"orbit": "Polar",
+		"links": ["https://space.skyrocket.de/doc_sdat/skysat-1.htm"],
+		"cospar": "2014-037D",
+		"currentOperator": "Planet Labs",
+		"operator": {
+			"name": "Planet Labs",
+			"country": "USA"
+		},
+		"launch": {
+			"date": "2014-07-08",
+			"site": "Baikonur",
+			"country": "Kazakhstan",
+			"vehicle": "Soyuz-2-1b Fregat-M"
+		}
+	},
+
+	"MOLNIYA 1-": {
+		"name": "MOLNIYA 1-",
+		"orbit": "Molniya",
+		"operator": {
+			"country": "Russia"
+		}
+	},
+
+	"MOLNIYA 2-": {
+		"name": "MOLNIYA 2-",
+		"orbit": "Molniya",
+		"operator": {
+			"country": "Russia"
+		}
+	},
+
+	"MOLNIYA 3-": {
+		"name": "MOLNIYA 3-",
+		"orbit": "Molniya",
+		"operator": {
+			"country": "Russia"
+		}
+	},
+
+	"GPS BIIF-": {
+		"name": "GPS BIIF-",
+		"orbit": "MEO",
+		"operator": {
+			"country": "USA"
+		}
+	},
+
+	"FLOCK ": {
+		"name": "FLOCK ",
+		"orbit": "LEO",
+		"operator": {
+			"country": "USA"
+		}
+	},
+
+	"GLOBALSTAR": {
+		"name": "GLOBALSTAR",
+		"orbit": "LEO",
+		"operator": {
+			"country": "USA"
+		}
+	}
+
+
+
+	"": {
+		"name": "",
+		"orbit": "",
+		"operator": {
+			"country": ""
+		}
+	},
+
+
+
+	"": {
+		"name": "",
+		"orbit": "",
+		"operator": {
+			"country": ""
+		}
+	},
+
+	"": {
+		"name": "",
+		"orbit": "",
+		"operator": {
+			"country": ""
+		}
+	},
+
+	"": {
+		"name": "",
+		"orbit": "",
+		"operator": {
+			"country": ""
+		}
+	},
+	
+}

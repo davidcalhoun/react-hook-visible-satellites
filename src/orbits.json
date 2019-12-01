@@ -1,0 +1,54 @@
+{
+	"LEO": {
+		"name": "Low Earth orbit"
+	},
+	"MEO": {
+		"name": "Medium Earth orbit"
+	},
+	"HEO": {
+		"name": "High Earth orbit"
+	},
+	"SYNC": {
+		"name": "Synchronous orbit"
+	},
+	"GSO": {
+		"name": "Geosynchronous orbit"
+	},
+	"GEO": {
+		"name": "Geostationary orbit",
+		"parent": "GSO"
+	},
+	"SEMISO": {
+		"name": "Semi-synchronous orbit"
+	},
+	"Tundra": {
+		"name": "Tundra orbit",
+		"parent": "GSO"
+	},
+	"Molniya": {
+		"name": "Molniya orbit",
+		"parent": "SSO"
+	},
+	"SSO": {
+		"name": "Sun-synchronous orbit"
+	},
+	"Polar": {
+		"name": "Polar orbit",
+		"parent": "Inclined"
+	},
+	"Inclined": {
+		"name": "Inclined"
+	},
+	"EGSO": {
+		"name": "Elliptical geosynchronous orbit",
+		"parent": "GSO"
+	},
+	"IGSO": {
+		"name": "Inclined geosynchronous orbit",
+		"parent": "GSO"
+	},
+	"QZSS": {
+		"name": "Quasi-Zenith Satellite System",
+		"parent": "GSO"
+	}
+}

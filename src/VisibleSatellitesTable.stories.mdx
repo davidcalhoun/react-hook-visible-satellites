@@ -1,0 +1,35 @@
+import {
+	Meta,
+	Story,
+	Preview,
+	Props,
+	Description
+} from "@storybook/addon-docs/blocks";
+import VisibleSatellitesTable from "./VisibleSatellitesTable";
+import sampleTLES from "./sample-tles.txt";
+
+<Meta title="Demos|VisibleSatellitesTable" component={VisibleSatellitesTable} />
+
+# VisibleSatellitesTable
+
+<br />
+
+## Description
+
+<Description of={VisibleSatellitesTable} />
+
+## Props
+
+<Props of={VisibleSatellitesTable} />
+
+## Preview
+
+<Preview>
+	<Story name="default">
+		<VisibleSatellitesTable
+			lat="32.9713669"
+			lng="-80.0186873"
+			tles={sampleTLES}
+		/>
+	</Story>
+</Preview>

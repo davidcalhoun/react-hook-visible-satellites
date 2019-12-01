@@ -1,0 +1,14 @@
+.container {
+	display: flex;
+	height: 500px;
+	max-height: 500px;
+	flex-direction: column;
+	align-items: center;
+	background-color: black;
+}
+
+.canvas {
+	background-color: black;
+	flex: 1;
+	min-height: 0; /* needed to expand to available space */
+}

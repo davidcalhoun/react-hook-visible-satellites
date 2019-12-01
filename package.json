@@ -1,0 +1,82 @@
+{
+  "name": "react-hook-visible-satellites",
+  "version": "1.0.0",
+  "description": "Computes and displays satellites currently visible overhead.",
+  "main": "dist/react-hook-visible-satellites.cjs.js",
+  "module": "dist/react-hook-visible-satellites.esm.js",
+  "scripts": {
+    "build": "rollup --config",
+    "start": "start-storybook",
+    "build-storybook": "build-storybook -c .storybook -o .storybook-out",
+    "storybook-publish": "npm run build-storybook && cp -r .storybook-out/* ../davidcalhoun.github.io/react-hook-visible-satellites/ && cd ../davidcalhoun.github.io/react-hook-visible-satellites/",
+    "test": "jest --verbose",
+    "prepare": "npm run build",
+    "push-publish": "git push && git push --tags && npm publish",
+    "publish-major": "npm version major && npm run push-publish",
+    "publish-minor": "npm version minor && npm run push-publish",
+    "publish-patch": "npm version patch && npm run push-publish"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/davidcalhoun/react-hook-visible-satellites.git"
+  },
+  "keywords": [
+    "react",
+    "orbital",
+    "mechanics",
+    "satellites",
+    "hook"
+  ],
+  "author": "David Calhoun",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/davidcalhoun/react-hook-visible-satellites/issues"
+  },
+  "homepage": "https://github.com/davidcalhoun/react-hook-visible-satellites#readme",
+  "devDependencies": {
+    "@babel/core": "^7.6.4",
+    "@babel/plugin-proposal-export-default-from": "^7.5.2",
+    "@babel/preset-env": "^7.6.3",
+    "@babel/preset-react": "^7.6.3",
+    "@storybook/addon-docs": "^5.2.6",
+    "@storybook/react": "^5.2.6",
+    "@testing-library/dom": "^6.10.0",
+    "@testing-library/jest-dom": "^4.2.0",
+    "@testing-library/react": "^9.3.0",
+    "babel-eslint": "^10.0.3",
+    "babel-jest": "^24.9.0",
+    "babel-loader": "^8.0.6",
+    "eslint": "^6.6.0",
+    "eslint-plugin-react": "^7.16.0",
+    "eslint-plugin-react-hooks": "^2.2.0",
+    "file-loader": "^4.3.0",
+    "identity-obj-proxy": "^3.0.0",
+    "jest": "^24.9.0",
+    "postcss-loader": "^3.0.0",
+    "prettier": "^1.18.2",
+    "prop-types": "^15.7.2",
+    "raw-loader": "^3.1.0",
+    "react": "^16.11.0",
+    "react-dom": "^16.11.0",
+    "react-transition-group": "^4.3.0",
+    "rollup": "^1.25.2",
+    "rollup-plugin-babel": "^4.3.3",
+    "rollup-plugin-node-resolve": "^5.2.0",
+    "rollup-plugin-postcss": "^2.0.3",
+    "style-loader": "^1.0.0"
+  },
+  "dependencies": {
+    "ramda": "^0.26.1",
+    "tle.js": "^2.1.0"
+  },
+  "peerDependencies": {
+    "react": ">=0.16.8",
+    "prop-types": "^15.7.2"
+  },
+  "optionalDependencies": {},
+  "jest": {
+    "moduleNameMapper": {
+      "\\.(css)$": "identity-obj-proxy"
+    }
+  }
+}
