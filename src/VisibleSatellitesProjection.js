@@ -94,7 +94,10 @@ function Canvas(props) {
 	return <canvas ref={container} className={props.className} />;
 }
 
-Canvas.defaultProps = 
+Canvas.defaultProps = {
+	satellites: [],
+	
+}
 
 export default function VisibleSatellitesProjection(props) {
 	const { tles, lat, lng } = props;
