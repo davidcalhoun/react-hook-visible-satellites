@@ -18,8 +18,10 @@ export default {
   ],
   external: [
     'prop-types',
+    'ramda',
     'react',
-    'react-dom'
+    'react-dom',
+    'tle.js'
   ],
   plugins: [
     resolve(),

@@ -2,9 +2,7 @@ import React, { useEffect } from "react";
 import PropTypes from "prop-types";
 import useVisibleSatellites from "./useVisibleSatellites";
 import styles from "./VisibleSatellitesTable.css";
-import uniqBy from "ramda/src/uniqBy";
-import path from "ramda/src/path";
-import sort from "ramda/src/sort";
+import {uniqBy, path, sort} from "ramda";
 import {toFixedFloat} from "./utils";
 
 export default function VisibleSatellitesTable(props) {

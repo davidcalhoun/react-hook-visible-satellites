@@ -2,9 +2,7 @@ import React, { useEffect, useRef } from "react";
 import PropTypes from "prop-types";
 import useVisibleSatellites from "./useVisibleSatellites";
 import styles from "./VisibleSatellitesProjection.css";
-import uniqBy from "ramda/src/uniqBy";
-import path from "ramda/src/path";
-import sort from "ramda/src/sort";
+import {uniqBy, path, sort} from "ramda";
 import { toFixedFloat, satelliteAzimElevToXY } from "./utils";
 
 function doOverlap(leftTopA, rightBottomA, leftTopB, rightBottomB) {

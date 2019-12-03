@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import splitEvery from "ramda/src/splitEvery";
+import { splitEvery } from "ramda";
 
 const elevToHypLength = (elev, canvasSize) => {
 	return canvasSize - (canvasSize * elev) / 89.99999999;

@@ -78,7 +78,6 @@ export default function useVisibleSatellites(
 	}, [documentIsVisible]);
 
 	function recalculateAllPositions() {
-		console.log(Date.now(), recalculateAllPositions);
 		visible = tlejs.getVisibleSatellites(lat, lng, 0, tles);
 		slowMoving = visible.filter(
 			satellite => satellite.info.velocity / satellite.info.range <= 0.001
