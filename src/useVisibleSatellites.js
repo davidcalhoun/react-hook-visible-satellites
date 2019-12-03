@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { splitRawTLEs } from "./utils";
+import { splitRawTLEs, useVisibilityChange } from "./utils";
 import * as TLEJS from "tle.js";
 const tlejs = new TLEJS();
 
@@ -17,6 +17,8 @@ export default function useVisibleSatellites(
 		processedTLEs: [],
 		processedTLEsFastSats: []
 	});
+	let [documentIsVisible, { setVisibilityListener, unsetVisibilityListener }] = useVisibilityChange();
+
 	let {
 		visibleSatellites,
 		processedTLEs,
@@ -42,7 +44,8 @@ export default function useVisibleSatellites(
 			visibleSatellites: visible
 		});
 
-		document.addEventListener("visibilitychange", handleVisibilityChange);
+		// Watch for document show/hide events, so we don't use up CPU while offscreen.
+		setVisibilityListener();
 
 		const timer = setInterval(() => {
 			if (isPaused) return;
@@ -62,9 +65,17 @@ export default function useVisibleSatellites(
 		}, refreshMS);
 		return () => {
 			clearInterval(timer);
-			document.removeEventListener("visibilitychange", handleVisibilityChange);
+			unsetVisibilityListener();
 		};
 	}, [rawTLEs]);
+
+	useEffect(() => {
+		if (documentIsVisible) {
+			unpause();
+			// Page just became visible again, so a full refresh is needed.
+			recalculateAllPositions();
+		}
+	}, [documentIsVisible]);
 
 	function recalculateAllPositions() {
 		console.log(Date.now(), recalculateAllPositions);
@@ -85,15 +96,6 @@ export default function useVisibleSatellites(
 	}
 	function unpause() {
 		isPaused = false;
-	}
-
-	function handleVisibilityChange() {
-		isPaused = document.visibilityState !== "visible";
-
-		if (!isPaused) {
-			// Page just became visible again, so a full refresh is needed.
-			recalculateAllPositions();
-		}
 	}
 
 	/**

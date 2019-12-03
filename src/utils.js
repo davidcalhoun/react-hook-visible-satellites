@@ -1,3 +1,4 @@
+import { useState, useEffect } from "react";
 import splitEvery from "ramda/src/splitEvery";
 
 const elevToHypLength = (elev, canvasSize) => {
@@ -70,3 +71,67 @@ export const debounce = (func, wait, immediate) => {
 		if (callNow) func.apply(context, args);
 	};
 };
+
+export function useVisibilityChange() {
+	let isVisible = document.visibilityState === "visible";
+
+	function handleVisibilityChange() {
+		isVisible = document.visibilityState === "visible";
+	}
+
+	function set() {
+		document.addEventListener("visibilitychange", handleVisibilityChange);
+	}
+
+	function unset() {
+		document.removeEventListener("visibilitychange", handleVisibilityChange);
+	}
+
+	return [isVisible, {setVisibilityListener: set, unsetVisibilityListener: unset}]
+}
+
+export function useWindowResize() {
+	let width = window.innerWidth;
+	let height = window.innerHeight;
+
+	function handleResize() {
+		width = window.innerWidth;
+		height = window.innerHeight;
+	}
+
+	function set() {
+		window.addEventListener("resize", handleResize);
+	}
+
+	function unset() {
+		window.removeEventListener("resize", handleResize);
+	}
+
+	return [[width, height], {setWindowResize: set, unsetWindowResize: unset}]
+}
+
+export function useResizeObserver(node) {
+	let width;
+	let height;
+	let resizeObserverEntries = [];
+
+	function handleResize(entries) {
+		resizeObserverEntries = entries;
+
+		const firstEntry = entries && entries[0];
+		if (firstEntry) {
+			width = firstEntry.contentRect.width;
+			height = firstEntry.contentRect.height;
+		}
+	}
+
+	function set() {
+		const resizeObserver = new ResizeObserver(handleResize);
+
+		resizeObserver.observe(node);
+	}
+
+	function unset() {
+		resizeObserver.unobserve(node);
+	}
+}
