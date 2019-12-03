@@ -1,6 +1,6 @@
 {
   "name": "react-hook-visible-satellites",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Computes and displays satellites currently visible overhead.",
   "main": "dist/react-hook-visible-satellites.cjs.js",
   "module": "dist/react-hook-visible-satellites.esm.js",
