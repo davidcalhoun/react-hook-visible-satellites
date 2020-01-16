@@ -134,8 +134,8 @@ function Canvas(props) {
 
 	useEffect(() => {
 		if (window.devicePixelRatio) {
-			const width = container.current.getBoundingClientRect().width;
-			const height = container.current.getBoundingClientRect().height;
+			const width = container.current.parentNode.getBoundingClientRect().width;
+			const height = container.current.parentNode.getBoundingClientRect().height;
 
 			const ctx = container.current.getContext("2d");
 			container.current.setAttribute(
