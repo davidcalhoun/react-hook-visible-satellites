@@ -115,7 +115,10 @@ function Canvas(props) {
 				}
 
 				if (isFastMoving) {
-					ctx.fillText(name, textX, textY);
+					if (elevation > 30) {
+						ctx.fillText(name, textX, textY);
+					}
+
 					ctx.fillRect(x, y, 5, 5);
 
 					satTextPositions.push({
@@ -191,7 +194,7 @@ export default function VisibleSatellitesProjection(props) {
 		}
 	};
 
-	const uniq = uniqBy(sat => sat.tleArr[0], visibleSatellites);
+	const uniq = uniqBy(sat => sat.tleArr[1].substr(0, 7), visibleSatellites);
 
 	const forDisplay = uniq.filter(satellite => satellite.info.elevation > 10);
 
