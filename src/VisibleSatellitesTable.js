@@ -8,8 +8,6 @@ import {toFixedFloat} from "./utils";
 export default function VisibleSatellitesTable(props) {
 	const {tles, lat, lng} = props;
 
-	console.log(44, tles)
-
 	const [
 		visibleSatellites,
 		{ pause, unpause }
