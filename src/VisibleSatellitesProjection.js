@@ -200,7 +200,11 @@ export default function VisibleSatellitesProjection(props) {
 
 	return (
 		<div className={styles.container} ref={container} style={style}>
-			<button onClick={handleToggleFullscreen}>Toggle fullscreen</button>
+			{
+				document.fullscreenEnabled && (
+					<button onClick={handleToggleFullscreen}>Toggle fullscreen</button>
+				)
+			}
 			<Canvas satellites={forDisplay} className={styles.canvas} />
 		</div>
 	);
