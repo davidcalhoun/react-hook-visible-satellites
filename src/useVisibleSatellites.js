@@ -1,7 +1,8 @@
 import { useState, useEffect } from "react";
+import { getVisibleSatellites } from "tle.js";
+import { uniqBy } from "ramda";
+
 import { splitRawTLEs, useVisibilityChange } from "./utils";
-import * as TLEJS from "tle.js";
-const tlejs = new TLEJS();
 
 /**
  *
@@ -17,7 +18,10 @@ export default function useVisibleSatellites(
 		processedTLEs: [],
 		processedTLEsFastSats: []
 	});
-	let [documentIsVisible, { setVisibilityListener, unsetVisibilityListener }] = useVisibilityChange();
+	let [
+		documentIsVisible,
+		{ setVisibilityListener, unsetVisibilityListener }
+	] = useVisibilityChange();
 
 	let {
 		visibleSatellites,
@@ -25,7 +29,7 @@ export default function useVisibleSatellites(
 		processedTLEsFastSats
 	} = satellites;
 
-	let tles;
+	let tles;  // TODO: move to useEffect scope.
 	let isPaused = false;
 	let visible;
 	let slowMoving;
@@ -34,7 +38,8 @@ export default function useVisibleSatellites(
 	let lastFullRecalculation;
 
 	useEffect(() => {
-		tles = splitRawTLEs(rawTLEs);
+		const tleArr = splitRawTLEs(rawTLEs);
+		tles = uniqBy(arr => arr[1], tleArr);
 
 		recalculateAllPositions();
 
@@ -59,7 +64,12 @@ export default function useVisibleSatellites(
 				...satellites,
 				visibleSatellites: [
 					...slowMoving,
-					...tlejs.getVisibleSatellites(lat, lng, 0, fastMovingTLEs)
+					...getVisibleSatellites({
+						observerLat: lat,
+						observerLng: lng,
+						observerHeight: 0,
+						tles: fastMovingTLEs
+					})
 				]
 			});
 		}, refreshMS);
@@ -78,7 +88,13 @@ export default function useVisibleSatellites(
 	}, [documentIsVisible]);
 
 	function recalculateAllPositions() {
-		visible = tlejs.getVisibleSatellites(lat, lng, 0, tles);
+		visible = getVisibleSatellites({
+			observerLat: lat,
+			observerLng: lng,
+			observerHeight: 0,
+			tles
+		});
+
 		slowMoving = visible.filter(
 			satellite => satellite.info.velocity / satellite.info.range <= 0.001
 		);

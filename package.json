@@ -68,7 +68,7 @@
   },
   "dependencies": {
     "ramda": "^0.27.0",
-    "tle.js": "^2.1.3"
+    "tle.js": "^4.0.0"
   },
   "peerDependencies": {
     "react": ">=0.16.8",
