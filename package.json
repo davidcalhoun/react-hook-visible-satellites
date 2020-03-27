@@ -13,9 +13,9 @@
     "test": "jest --verbose",
     "prepare": "npm run build",
     "push-publish": "git push && git push --tags && npm publish",
-    "publish-major": "npm version major && npm run push-publish",
-    "publish-minor": "npm version minor && npm run push-publish",
-    "publish-patch": "npm version patch && npm run push-publish"
+    "major": "npm version major && npm run push-publish",
+    "minor": "npm version minor && npm run push-publish",
+    "patch": "npm version patch && npm run push-publish"
   },
   "repository": {
     "type": "git",
