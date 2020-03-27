@@ -2,81 +2,58 @@ import { useState, useEffect } from "react";
 import { getVisibleSatellites } from "tle.js";
 import { uniqBy } from "ramda";
 
-import { splitRawTLEs, useVisibilityChange } from "./utils";
+import { splitRawTLEs, useVisibilityChange, useInterval } from "./utils";
 
 /**
  *
  */
 export default function useVisibleSatellites(
 	rawTLEs,
-	lat,
-	lng,
-	refreshMS = 5000
+	observerLat,
+	observerLng,
+	refreshMS = 1000
 ) {
 	let [satellites, setSatellites] = useState({
+		allTLEs: [],
+		fastSatelliteTLEs: [],
+		lastFullRecalculation: null,
 		visibleSatellites: [],
-		processedTLEs: [],
-		processedTLEsFastSats: []
+		visibleSatellitesSlow: []
 	});
 	let [
 		documentIsVisible,
 		{ setVisibilityListener, unsetVisibilityListener }
 	] = useVisibilityChange();
+	let [isPaused, setIsPaused] = useState(false);
 
 	let {
+		allTLEs,
+		fastSatelliteTLEs,
+		lastFullRecalculation,
 		visibleSatellites,
-		processedTLEs,
-		processedTLEsFastSats
+		visibleSatellitesSlow
 	} = satellites;
 
-	let tles;  // TODO: move to useEffect scope.
-	let isPaused = false;
-	let visible;
-	let slowMoving;
-	let fastMoving;
-	let fastMovingTLEs;
-	let lastFullRecalculation;
+	// Initialization
+	useEffect(() => {
+		// Watches for document show/hide events, so CPU time isn't wasted while offscreen.
+		setVisibilityListener();
+
+		return () => {
+			unsetVisibilityListener();
+		};
+	}, []);
+
+	// Refreshes visible satellites.
+	useInterval(() => {
+		updatePositions();
+	}, refreshMS);
 
 	useEffect(() => {
 		const tleArr = splitRawTLEs(rawTLEs);
-		tles = uniqBy(arr => arr[1], tleArr);
+		const allTLEs = uniqBy(arr => arr[1], tleArr);
 
-		recalculateAllPositions();
-
-		setSatellites({
-			processedTLEs: tles,
-			processedTLEsFastSats: fastMovingTLEs,
-			visibleSatellites: visible
-		});
-
-		// Watch for document show/hide events, so we don't use up CPU while offscreen.
-		setVisibilityListener();
-
-		const timer = setInterval(() => {
-			if (isPaused) return;
-
-			// Periodically refresh fastmoving TLEs
-			if (Date.now() - lastFullRecalculation > 10000) {
-				recalculateAllPositions();
-			}
-
-			setSatellites({
-				...satellites,
-				visibleSatellites: [
-					...slowMoving,
-					...getVisibleSatellites({
-						observerLat: lat,
-						observerLng: lng,
-						observerHeight: 0,
-						tles: fastMovingTLEs
-					})
-				]
-			});
-		}, refreshMS);
-		return () => {
-			clearInterval(timer);
-			unsetVisibilityListener();
-		};
+		recalculateAllPositions(allTLEs);
 	}, [rawTLEs]);
 
 	useEffect(() => {
@@ -87,47 +64,70 @@ export default function useVisibleSatellites(
 		}
 	}, [documentIsVisible]);
 
-	function recalculateAllPositions() {
-		visible = getVisibleSatellites({
-			observerLat: lat,
-			observerLng: lng,
+	function updatePositions() {
+		if (isPaused) return;
+
+		// Periodically refresh both slow and fast moving satellites.
+		if (Date.now() - lastFullRecalculation > 10000) {
+			recalculateAllPositions();
+		} else {
+			fastRecalculate();
+		}
+	}
+
+	// Recalculates only fast satellites.
+	function fastRecalculate() {
+		setSatellites({
+			...satellites,
+			visibleSatellites: [
+				...visibleSatellitesSlow,
+
+				// Update fast-moving more frequently.
+				...getVisibleSatellites({
+					observerLat,
+					observerLng,
+					observerHeight: 0,
+					tles: fastSatelliteTLEs
+				})
+			]
+		});
+	}
+
+	function recalculateAllPositions(newTLEs) {
+		const tles = newTLEs || allTLEs;
+
+		if (tles.length === 0) return;
+
+		const newVisible = getVisibleSatellites({
+			observerLat,
+			observerLng,
 			observerHeight: 0,
-			tles
+			tles,
+			timestampMS: Date.now()
 		});
 
-		slowMoving = visible.filter(
-			satellite => satellite.info.velocity / satellite.info.range <= 0.001
+		const fast = newVisible.filter(
+			satellite => satellite.info.velocity / satellite.info.range >= 0.001
 		);
-		fastMoving = visible.filter(
-			satellite => satellite.info.velocity / satellite.info.range > 0.001
-		);
-		fastMovingTLEs = fastMoving.map(sat => sat.tleArr);
 
-		lastFullRecalculation = Date.now();
+		setSatellites({
+			allTLEs: tles,
+			fastSatelliteTLEs: fast.map(sat => sat.tleArr),
+			lastFullRecalculation: Date.now(),
+			visibleSatellites: newVisible,
+			visibleSatellitesSlow: newVisible.filter(
+				satellite =>
+					satellite.info.velocity / satellite.info.range < 0.001
+			)
+		});
 	}
 
 	function pause() {
-		isPaused = true;
+		setIsPaused(true);
 	}
 	function unpause() {
-		isPaused = false;
+		setIsPaused(false);
 	}
 
-	/**
-	 * Traverses entire list of TLEs and updates currently visible satellites.
-	 * Note: high-cost operation.
-	 */
-	// function updateVisibleSatellites() {
-	// 	console.log('updating', visibleSatellites)
-
-	// }
-
-	/**
-	 * Lower-cost operation to update the positions of satellites we already know are visible.
-	 */
-	// function updateOnlyCurrentlyVisibleSatellites() {
-
-	// }
-
-	return [visibleSatellites, { pause, unpause }];
+	return [satellites.visibleSatellites, { pause, unpause }];
 }
