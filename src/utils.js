@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { splitEvery } from "ramda";
 
 const elevToHypLength = (elev, canvasSize) => {
@@ -61,7 +61,7 @@ export const debounce = (func, wait, immediate) => {
 	let timeout;
 	return (...args) => {
 		const context = this;
-		const later = function() {
+		const later = function () {
 			timeout = null;
 			if (!immediate) func.apply(context, args);
 		};
@@ -84,10 +84,16 @@ export function useVisibilityChange() {
 	}
 
 	function unset() {
-		document.removeEventListener("visibilitychange", handleVisibilityChange);
+		document.removeEventListener(
+			"visibilitychange",
+			handleVisibilityChange
+		);
 	}
 
-	return [isVisible, {setVisibilityListener: set, unsetVisibilityListener: unset}]
+	return [
+		isVisible,
+		{ setVisibilityListener: set, unsetVisibilityListener: unset }
+	];
 }
 
 export function useWindowResize() {
@@ -107,7 +113,10 @@ export function useWindowResize() {
 		window.removeEventListener("resize", handleResize);
 	}
 
-	return [[width, height], {setWindowResize: set, unsetWindowResize: unset}]
+	return [
+		[width, height],
+		{ setWindowResize: set, unsetWindowResize: unset }
+	];
 }
 
 export function useResizeObserver(node) {
@@ -134,4 +143,25 @@ export function useResizeObserver(node) {
 	function unset() {
 		resizeObserver.unobserve(node);
 	}
+}
+
+/* https://overreacted.io/making-setinterval-declarative-with-react-hooks/ */
+export function useInterval(callback, delay) {
+	const savedCallback = useRef();
+
+	// Remember the latest callback.
+	useEffect(() => {
+		savedCallback.current = callback;
+	}, [callback]);
+
+	// Set up the interval.
+	useEffect(() => {
+		function tick() {
+			savedCallback.current();
+		}
+		if (delay !== null) {
+			let id = setInterval(tick, delay);
+			return () => clearInterval(id);
+		}
+	}, [delay]);
 }
