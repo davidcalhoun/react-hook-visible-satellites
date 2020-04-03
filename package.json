@@ -38,7 +38,6 @@
     "@babel/core": "^7.9.0",
     "@babel/plugin-proposal-export-default-from": "^7.8.3",
     "@babel/preset-env": "^7.9.0",
-    "@babel/preset-react": "^7.9.4",
     "@storybook/addon-docs": "^5.3.18",
     "@storybook/react": "^5.3.18",
     "@testing-library/dom": "^7.2.0",
